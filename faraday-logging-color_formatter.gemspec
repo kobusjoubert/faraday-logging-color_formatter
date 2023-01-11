@@ -29,7 +29,14 @@ Gem::Specification.new do |spec|
   spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'faraday', '~> 2.7'
+  spec.add_runtime_dependency 'faraday', '~> 2.7'
+
+  spec.add_development_dependency 'bundler', '~> 2.4'
+  spec.add_development_dependency 'rake', '~> 13.0'
+  spec.add_development_dependency 'rspec', '~> 3.12'
+  spec.add_development_dependency 'rubocop', '~> 1.42'
+  spec.add_development_dependency 'rubocop-rake', '~> 0.6'
+  spec.add_development_dependency 'rubocop-rspec', '~> 2.16'
 
   # For more information and examples about making a new gem, check out our
   # guide at: https://bundler.io/guides/creating_gem.html
