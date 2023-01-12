@@ -9,50 +9,56 @@ module Faraday
         ANSI_COLORS = { red: "\e[31m", green: "\e[32m", yellow: "\e[33m", blue: "\e[34m", magenta: "\e[35m", cyan: "\e[36m", reset: "\e[0m" }.freeze
 
         def request(env)
-          http_request_term = "#{ANSI_COLORS[:blue]}HTTP Request#{ANSI_COLORS[:reset]}"
+          http_request_term = in_color(:blue) { 'HTTP Request' }
+          http_request_log  = in_color(request_log_color(env.method)) { "#{env.method.upcase} #{apply_filters(env.url.to_s)}" }
 
-          request_log = proc { "#{request_log_color(env.method)}#{env.method.upcase} #{apply_filters(env.url.to_s)}#{ANSI_COLORS[:reset]}" }
-          public_send(log_level, http_request_term, &request_log)
+          request_log = proc { "#{http_request_term}  #{http_request_log}" }
+          public_send(log_level, &request_log)
 
-          log_headers(http_request_term, env.request_headers) if log_headers?(:request)
-          log_body(http_request_term, env[:body]) if env[:body] && log_body?(:request)
+          log_headers(nil, env.request_headers) if log_headers?(:request)
+          log_body(nil, env[:body]) if env[:body] && log_body?(:request)
         end
 
         def response(env)
-          http_response_term = "#{ANSI_COLORS[:blue]}HTTP Response#{ANSI_COLORS[:reset]}"
+          http_response_term = in_color(:blue) { 'HTTP Response' }
+          http_response_log  = in_color(response_log_color(env.status)) { env.status }
 
-          status = proc { "#{response_log_color(env.status)}Status #{env.status}#{ANSI_COLORS[:reset]}" }
-          public_send(log_level, http_response_term, &status)
+          status = proc { "#{http_response_term}  #{http_response_log}" }
+          public_send(log_level, &status)
 
-          log_headers(http_response_term, env.response_headers) if log_headers?(:response)
-          log_body(http_response_term, env[:body]) if env[:body] && log_body?(:response)
+          log_headers(nil, env.response_headers) if log_headers?(:response)
+          log_body(nil, env[:body]) if env[:body] && log_body?(:response)
         end
 
         private
 
+        def in_color(color)
+          "#{ANSI_COLORS[color]}#{yield}#{ANSI_COLORS[:reset]}"
+        end
+
         def request_log_color(request_method)
           case request_method
           when :post
-            ANSI_COLORS[:green]
+            :green
           when :put, :patch
-            ANSI_COLORS[:yellow]
+            :yellow
           when :delete
-            ANSI_COLORS[:red]
+            :red
           else
-            ANSI_COLORS[:blue]
+            :blue
           end
         end
 
         def response_log_color(response_status)
           case response_status
           when 100..199
-            ANSI_COLORS[:blue]
+            :blue
           when 200..299
-            ANSI_COLORS[:green]
+            :green
           when 300..399
-            ANSI_COLORS[:yellow]
+            :yellow
           when 400..599
-            ANSI_COLORS[:red]
+            :red
           end
         end
       end
