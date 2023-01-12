@@ -3,7 +3,7 @@ require:
   - rubocop-rake
 
 AllCops:
-  TargetRubyVersion: 2.6
+  TargetRubyVersion: 2.7
   NewCops: enable
 
 Metrics/AbcSize:
@@ -11,6 +11,10 @@ Metrics/AbcSize:
 
 Style/Documentation:
   Enabled: false
+
+Style/FrozenStringLiteralComment:
+  Exclude:
+    - exe/**/*
 
 Style/StringLiterals:
   Enabled: true

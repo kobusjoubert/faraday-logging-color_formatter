@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Add some color to your Faraday logging output.'
   spec.homepage = 'https://github.com/kobusjoubert/faraday-logging-color_formatter'
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.6.0'
+  spec.required_ruby_version = '>= 2.7.0'
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/kobusjoubert/faraday-logging-color_formatter'
   spec.metadata['changelog_uri'] = 'https://github.com/kobusjoubert/faraday-logging-color_formatter/CHANGELOG.md'

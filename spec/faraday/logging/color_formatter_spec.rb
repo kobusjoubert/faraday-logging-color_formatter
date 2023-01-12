@@ -2,6 +2,6 @@
 
 RSpec.describe Faraday::Logging::ColorFormatter do
   it 'has a version number' do
-    expect(Faraday::Logging::ColorFormatter::VERSION).not_to be nil
+    expect(Faraday::Logging::ColorFormatter::VERSION).not_to be_nil
   end
 end
