@@ -21,7 +21,7 @@ module Faraday
 
         def response(env)
           http_response_term = in_color(:blue) { 'HTTP Response' }
-          http_response_log  = in_color(response_log_color(env.status)) { env.status }
+          http_response_log  = in_color(response_log_color(env.status)) { "Status #{env.status}" }
 
           status = proc { "#{http_response_term}  #{http_response_log}" }
           public_send(log_level, &status)
