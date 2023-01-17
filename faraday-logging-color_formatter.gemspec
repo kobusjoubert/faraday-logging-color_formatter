@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency 'faraday', '~> 2.1'
 
-  spec.add_development_dependency 'bundler', '~> 2.4'
+  spec.add_development_dependency 'bundler', '~> 2.3'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.12'
   spec.add_development_dependency 'rubocop', '~> 1.42'
