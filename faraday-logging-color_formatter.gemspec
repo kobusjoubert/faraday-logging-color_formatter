@@ -10,12 +10,12 @@ Gem::Specification.new do |spec|
 
   spec.summary = 'Faraday color logging formatter'
   spec.description = 'Add some color to your Faraday logging output.'
-  spec.homepage = 'https://github.com/kobusjoubert/faraday-logging-color_formatter'
+  spec.homepage = 'https://rubygems.org/gems/faraday-logging-color_formatter'
   spec.license = 'MIT'
   spec.required_ruby_version = '>= 2.7.0'
   spec.metadata['homepage_uri'] = spec.homepage
   spec.metadata['source_code_uri'] = 'https://github.com/kobusjoubert/faraday-logging-color_formatter'
-  spec.metadata['changelog_uri'] = 'https://github.com/kobusjoubert/faraday-logging-color_formatter/CHANGELOG.md'
+  spec.metadata['changelog_uri'] = 'https://github.com/kobusjoubert/faraday-logging-color_formatter/blob/main/CHANGELOG.md'
   spec.metadata['rubygems_mfa_required'] = 'true'
 
   # Specify which files should be added to the gem when it is released.
