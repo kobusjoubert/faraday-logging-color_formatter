@@ -1,3 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'faraday/logging/color_formatter'

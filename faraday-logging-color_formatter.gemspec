@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
     end
   end
 
-  spec.executables = spec.files.grep(%r{\Aexe/}) { |f| File.basename(f) }
   spec.require_paths = ['lib']
 
   spec.add_runtime_dependency 'faraday', '~> 2.1'
