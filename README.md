@@ -34,6 +34,12 @@ And then add the `Faraday::Logging::ColorFormatter` formatter to your logger mid
       conn.response :logger, ActiveSupport::Logger.new($stdout), formatter: Faraday::Logging::ColorFormatter
     end
 
+If you want to replace the default `HTTP Request` and `HTTP Response` prefixes or adjust the indentation, pass in a `prefix` hash with your own values.
+
+    connection = Faraday.new(url: 'http://httpbingo.org') do |conn|
+      conn.response :logger, ActiveSupport::Logger.new($stdout), formatter: Faraday::Logging::ColorFormatter, prefix: { request: 'request', response: 'response', indent: 2 }
+    end
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests and `rake rubocop` to run the linters. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

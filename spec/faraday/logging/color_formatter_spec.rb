@@ -38,7 +38,57 @@ RSpec.describe Faraday::Logging::ColorFormatter do
   it 'includes the request term' do
     connection.get('/ebi')
     log.rewind
-    expect(log.read).to include("\e[34mHTTP Request\e[0m")
+    expect(log.read).to include("INFO -- : \e[34mHTTP Request  \e[0m")
+  end
+
+  it 'includes the response term' do
+    connection.get('/ebi')
+    log.rewind
+    expect(log.read).to include("INFO -- : \e[34mHTTP Response  \e[0m")
+  end
+
+  it 'indents the request message' do
+    connection = Faraday.new(url: 'http://sushi.com') do |builder|
+      builder.response(:logger, logger, formatter: described_class, prefix: { indent: 2 })
+      builder.adapter(:test, stubs)
+    end
+
+    connection.get('/ebi')
+    log.rewind
+    expect(log.read).to include("INFO -- :   \e[34mHTTP Request  \e[0m")
+  end
+
+  it 'indents the response message' do
+    connection = Faraday.new(url: 'http://sushi.com') do |builder|
+      builder.response(:logger, logger, formatter: described_class, prefix: { indent: 2 })
+      builder.adapter(:test, stubs)
+    end
+
+    connection.get('/ebi')
+    log.rewind
+    expect(log.read).to include("INFO -- :   \e[34mHTTP Response  \e[0m")
+  end
+
+  it 'changes the request prefix' do
+    connection = Faraday.new(url: 'http://sushi.com') do |builder|
+      builder.response(:logger, logger, formatter: described_class, prefix: { request: 'API Request' })
+      builder.adapter(:test, stubs)
+    end
+
+    connection.get('/ebi')
+    log.rewind
+    expect(log.read).to include("INFO -- : \e[34mAPI Request  \e[0m")
+  end
+
+  it 'changes the response prefix' do
+    connection = Faraday.new(url: 'http://sushi.com') do |builder|
+      builder.response(:logger, logger, formatter: described_class, prefix: { response: 'API Response' })
+      builder.adapter(:test, stubs)
+    end
+
+    connection.get('/ebi')
+    log.rewind
+    expect(log.read).to include("INFO -- : \e[34mAPI Response  \e[0m")
   end
 
   it 'formats GET requests in blue' do
@@ -69,12 +119,6 @@ RSpec.describe Faraday::Logging::ColorFormatter do
     connection.delete('/ikura')
     log.rewind
     expect(log.read).to include("\e[31mDELETE http://sushi.com/ikura\e[0m")
-  end
-
-  it 'includes the response term' do
-    connection.get('/ebi')
-    log.rewind
-    expect(log.read).to include("\e[34mHTTP Response\e[0m")
   end
 
   it 'formats 1XX responses in blue' do
