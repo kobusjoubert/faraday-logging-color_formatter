@@ -20,12 +20,7 @@ RSpec.describe Faraday::Logging::ColorFormatter do
     end
   end
 
-  let(:connection) do
-    Faraday.new(url: 'http://sushi.com') do |builder|
-      builder.response(:logger, logger, formatter: described_class)
-      builder.adapter(:test, stubs)
-    end
-  end
+  let(:connection) { new_connection }
 
   it 'has a version number' do
     expect(described_class::VERSION).not_to be_nil
@@ -48,45 +43,28 @@ RSpec.describe Faraday::Logging::ColorFormatter do
   end
 
   it 'indents the request message' do
-    connection = Faraday.new(url: 'http://sushi.com') do |builder|
-      builder.response(:logger, logger, formatter: described_class, prefix: { indent: 2 })
-      builder.adapter(:test, stubs)
-    end
-
+    new_connection(prefix: { indent: 2 }).get('/ebi')
     connection.get('/ebi')
     log.rewind
     expect(log.read).to include("INFO -- :   \e[34mHTTP Request  \e[0m")
   end
 
   it 'indents the response message' do
-    connection = Faraday.new(url: 'http://sushi.com') do |builder|
-      builder.response(:logger, logger, formatter: described_class, prefix: { indent: 2 })
-      builder.adapter(:test, stubs)
-    end
-
+    new_connection(prefix: { indent: 2 }).get('/ebi')
     connection.get('/ebi')
     log.rewind
     expect(log.read).to include("INFO -- :   \e[34mHTTP Response  \e[0m")
   end
 
   it 'changes the request prefix' do
-    connection = Faraday.new(url: 'http://sushi.com') do |builder|
-      builder.response(:logger, logger, formatter: described_class, prefix: { request: 'API Request' })
-      builder.adapter(:test, stubs)
-    end
-
+    new_connection(prefix: { request: 'API Request' }).get('/ebi')
     connection.get('/ebi')
     log.rewind
     expect(log.read).to include("INFO -- : \e[34mAPI Request  \e[0m")
   end
 
   it 'changes the response prefix' do
-    connection = Faraday.new(url: 'http://sushi.com') do |builder|
-      builder.response(:logger, logger, formatter: described_class, prefix: { response: 'API Response' })
-      builder.adapter(:test, stubs)
-    end
-
-    connection.get('/ebi')
+    new_connection(prefix: { response: 'API Response' }).get('/ebi')
     log.rewind
     expect(log.read).to include("INFO -- : \e[34mAPI Response  \e[0m")
   end
@@ -149,5 +127,14 @@ RSpec.describe Faraday::Logging::ColorFormatter do
     connection.get('/kaiso')
     log.rewind
     expect(log.read).to include("\e[31mStatus 500\e[0m")
+  end
+
+  private
+
+  def new_connection(options = {})
+    Faraday.new(url: 'http://sushi.com') do |builder|
+      builder.response(:logger, logger, formatter: described_class, **options)
+      builder.adapter(:test, stubs)
+    end
   end
 end

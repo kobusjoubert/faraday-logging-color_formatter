@@ -15,7 +15,7 @@ module Faraday
         end
 
         def request(env)
-          http_request_term = (prefix[:request].nil? || prefix[:request].strip.empty?) ? nil : in_color(:blue) { "#{prefix[:request]}  " }
+          http_request_term = prefix[:request].nil? || prefix[:request].strip.empty? ? nil : in_color(:blue) { "#{prefix[:request]}  " }
           http_request_log  = in_color(request_log_color(env.method)) { "#{env.method.upcase} #{apply_filters(env.url.to_s)}" }
 
           request_log = proc { "#{' ' * prefix[:indent]}#{http_request_term}#{http_request_log}" }
@@ -26,7 +26,7 @@ module Faraday
         end
 
         def response(env)
-          http_response_term = (prefix[:response].nil? || prefix[:response].strip.empty?) ? nil : in_color(:blue) { "#{prefix[:response]}  " }
+          http_response_term = prefix[:response].nil? || prefix[:response].strip.empty? ? nil : in_color(:blue) { "#{prefix[:response]}  " }
           http_response_log  = in_color(response_log_color(env.status)) { "Status #{env.status}" }
 
           status = proc { "#{' ' * prefix[:indent]}#{http_response_term}#{http_response_log}" }
